@@ -1,6 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'infraction'
-  s.version = "0.0.1"
+  revcount = `git rev-list HEAD | wc -l`.strip
+  s.version = "0.0.#{revcount}"
   s.date = '2013-08-01'
   s.authors = 'www-thoughtworks-com'
   s.email = 'www@thoughtworks.com'
