@@ -15,7 +15,7 @@ describe Infraction do
               forward_to('68.64.190.188')
         end
 
-        config.should match_config 'server {
+        expect(config).to match_config 'server {
                                         listen 80;
                                         server_name thoughtworks-studios.com www.thoughtworks-studios.com;
 
@@ -26,5 +26,23 @@ describe Infraction do
                                     }'
       end
     end
+
+    describe 'redirect' do
+
+      let(:redirect_config) do
+        Infraction.nginx do
+          redirect('/blogs/atom.xml').to('http://feeds.feedburner.com/thoughtworks-blogs')
+        end
+      end
+
+      it 'should be abe to create nginx redirect config' do
+        expect(redirect_config).to match_config '
+                  location /blogs/atom.xml {
+                       rewrite ^/blogs/atom.xml$ http://feeds.feedburner.com/thoughtworks-blogs permanent;
+                  }'
+      end
+    end
+
+
   end
 end
